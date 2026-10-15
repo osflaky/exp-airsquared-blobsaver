@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }} [${{ matrix.expander_leg }}]
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - os: macos-13
+          arch: arm64
+          runner: macos-latest
+          expander_leg: macos-13--arm64
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'zulu'
+          # OpenJFX (and org.openjfx.javafxplugin) has no windows-aarch_64 build, so on
+          # Windows on ARM use the x64 JDK, which Windows 11 runs through its x64 emulation
+        architecture: ${{ (matrix.os == 'windows-latest' && matrix.arch == 
+          'arm64') && 'x64' || '' }}
+    - name: Ensure Inno Setup is available
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        if (-not (Get-Command iscc -ErrorAction SilentlyContinue)) {
+          choco install innosetup -y --no-progress
+          Add-Content $env:GITHUB_PATH "${env:ProgramFiles(x86)}\Inno Setup 6"
+        }
+    - uses: gradle/actions/setup-gradle@v4
+    - name: Install Linux dependencies
+      run: sudo apt-get install libplist-dev libimobiledevice-dev 
+        libirecovery-1.0-dev
+      if: runner.os == 'Linux'
+    - name: Gradle build
+      run: ./gradlew build --no-daemon
+    - uses: actions/upload-artifact@v4
+      with:
+#          artifact-per-file: true
+#          artifact-name-rule: ${{ runner.os }}${ext}
+        name: ${{ runner.os }}-${{ runner.arch }}
+        path: build/distributions/*
+    - name: Upload reports on failure
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: failure-${{ runner.os }}
+        path: build/reports/
+    timeout-minutes: 150
