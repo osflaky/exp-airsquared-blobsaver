@@ -1,0 +1,10 @@
+# Declare files that will always have CRLF line endings on checkout.
+/dist/windows/files/LICENSE text eol=crlf
+/dist/libraries_used.txt text eol=lf
+/dist/windows/files/libraries_used.txt text eol=crlf
+gradlew.bat text eol=crlf
+gradlew text eol=lf
+
+# Tell GitHub’s linguist which files to ignore
+gradlew linguist-vendored
+gradlew.bat linguist-vendored

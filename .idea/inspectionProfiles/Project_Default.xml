@@ -1,0 +1,25 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="ConfigurationAvoidance" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="Duplicates" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="HttpUrlsUsage" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredUrls">
+        <list>
+          <option value="http://www.w3.org/" />
+          <option value="http://json-schema.org/draft" />
+          <option value="http://java.sun.com/" />
+          <option value="http://xmlns.jcp.org/" />
+          <option value="http://javafx.com/javafx/" />
+          <option value="http://javafx.com/fxml" />
+          <option value="http://maven.apache.org/xsd/" />
+          <option value="http://maven.apache.org/POM/" />
+          <option value="http://schemas.xmlsoap.org/" />
+          <option value="http://www.google-analytics.com" />
+          <option value="http://www.apple.com" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="ThrowablePrintStackTrace" enabled="true" level="TYPO" enabled_by_default="true" editorAttributes="TYPO" />
+  </profile>
+</component>
